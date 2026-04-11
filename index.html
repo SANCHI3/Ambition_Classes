@@ -44,7 +44,7 @@ background:white;
 /* Hero */
 
 .carousel-item{
-height:450px;
+  height: 60vh;
 }
 
 .carousel-item img{
@@ -67,9 +67,15 @@ bottom:30%;
 text-align:left;
 }
 
-.carousel-caption h1{
-font-size:42px;
-font-weight:bold;
+@media (max-width: 768px){
+  .carousel-caption h1{
+    font-size: 24px;
+  }
+
+  .carousel-caption{
+    bottom: 15%;
+    text-align: center;
+  }
 }
 
 /* Stats */
