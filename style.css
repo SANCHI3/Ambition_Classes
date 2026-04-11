@@ -1,0 +1,202 @@
+/* ===== GLOBAL STYLES ===== */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #f4f6f9;
+}
+
+:root {
+    --teal: #0f7c82;
+    --yellow: #f4c430;
+    --purple: #4b2e83;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+    background-color: var(--teal);
+}
+
+.logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--yellow);
+    background: white;
+}
+
+/* ===== SIDEBAR (ADMIN / DASHBOARD) ===== */
+
+.sidebar {
+    height: 100vh;
+    width: 220px;
+    background: var(--teal);
+    color: white;
+    position: fixed;
+    padding-top: 20px;
+}
+
+.sidebar h4 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: #0a5c60;
+}
+
+/* ===== MAIN CONTENT ===== */
+
+.main {
+    margin-left: 220px;
+    padding: 30px;
+}
+
+/* ===== BUTTONS ===== */
+
+.btn-primary {
+    background-color: var(--teal);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5e62;
+}
+
+.btn-warning {
+    background-color: var(--yellow);
+    border: none;
+}
+
+.btn-success {
+    background-color: var(--purple);
+    border: none;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+/* ===== TABLES ===== */
+
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th {
+    background: var(--purple);
+    color: white;
+}
+
+/* ===== CARDS ===== */
+
+.card-box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ===== INPUTS ===== */
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* ===== HERO SECTIONS ===== */
+
+.hero {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+}
+
+.hero h1 {
+    position: relative;
+    z-index: 2;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/* ===== CARDS (WEBSITE) ===== */
+
+.custom-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.custom-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* ===== LOGIN BOX ===== */
+
+.login-box {
+    width: 380px;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+/* ===== FOOTER ===== */
+
+footer {
+    background: var(--teal);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* ===== UTILITY ===== */
+
+.section-title {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.navbar{
+    background-color: var(--teal);
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+body{
+    padding-top: 90px;
+}

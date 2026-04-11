@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>CET Mock Test | Ambition Classes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+:root{
+--teal:#0f7c82;
+--yellow:#f4c430;
+--purple:#4b2e83;
+}
+
+body{
+background:#f4f6f9;
+font-family:Arial;
+}
+
+/* Navbar */
+.navbar{
+    background-color: var(--teal);
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+/* Question Box */
+.question-box{
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+    margin-top:40px;
+    border-left:6px solid #4b2e83;
+}
+
+/* Buttons */
+
+.btn-primary{
+background:var(--teal);
+border:none;
+}
+
+.btn-primary:hover{
+background:#0b5e62;
+}
+
+.btn-success{
+background:var(--purple);
+border:none;
+}
+
+.btn-success:hover{
+background:#3b2467;
+}
+
+.btn-secondary{
+background:var(--yellow);
+border:none;
+color:black;
+}
+
+.btn-secondary:hover{
+background:#d9ac21;
+}
+
+.palette button{
+width:45px;
+height:45px;
+border-radius:6px;
+border:none;
+font-weight:bold;
+}
+
+.notVisited{
+background:#dee2e6;
+}
+
+.answered{
+background:#28a745;
+color:white;
+}
+
+.current{
+border:3px solid black;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<div class="container">
+
+<a class="navbar-brand" href="index.html">Ambition Classes</a>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="menu">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="about.html">About</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="courses.html">Courses</a></li>
+<li class="nav-item"><a class="nav-link text-white active" href="mocktest.html">Mock Test</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="results.html">Results</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="gallery.html">Gallery</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="branches.html">Branches</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
+
+<li class="nav-item dropdown">
+
+<a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+Login
+</a>
+
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" href="student-login.html">Student Login</a></li>
+<li><a class="dropdown-item" href="parent-login.html">Parent Login</a></li>
+<li><a class="dropdown-item" href="admin-login.html">Admin Login</a></li>
+</ul>
+
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</nav>
+
+<!-- MOCK TEST -->
+
+<div class="container">
+
+<div class="question-box">
+    <h5 class="mb-2 text-primary">Select Test to Start</h5>
+
+<select id="studentTestSelect" class="form-control mb-3" onchange="loadTestQuestions()">
+    <option value="">Select Test</option>
+</select>
+
+<p id="selectMsg">Please select a test to begin</p>
+
+<!-- 🔴 WRAP THIS -->
+<div id="testSection" style="display:none;">
+
+    <h6>Question Palette</h6>
+    <div id="paletteButtons" class="palette mb-4"></div>
+
+    <p id="progress" class="text-muted"></p>
+
+    <h5 id="questionText"></h5>
+
+    <div class="mt-3">
+        <label><input type="radio" name="option" value="0"> <span id="opt0"></span></label><br>
+        <label><input type="radio" name="option" value="1"> <span id="opt1"></span></label><br>
+        <label><input type="radio" name="option" value="2"> <span id="opt2"></span></label><br>
+        <label><input type="radio" name="option" value="3"> <span id="opt3"></span></label>
+    </div>
+
+    <div class="mt-4">
+        <button onclick="prevQuestion()" class="btn btn-warning">Previous</button>
+        <button onclick="nextQuestion()" class="btn btn-info">Next</button>
+        <button onclick="submitTest()" class="btn btn-primary">Submit Test</button>
+    </div>
+
+</div>
+
+<h3 class="text-center mt-4" id="score"></h3>
+
+</div>
+
+<script>
+
+let questions = [];
+
+let currentQuestion = 0;
+
+let answers = new Array(questions.length).fill(null);
+
+function loadTestsForStudents(){
+
+    fetch("http://localhost:8080/api/tests")
+    .then(res => res.json())
+    .then(data => {
+
+        let dropdown = document.getElementById("studentTestSelect");
+
+        dropdown.innerHTML = "<option value=''>Select Test</option>";
+
+        data.forEach(t => {
+            dropdown.innerHTML += `
+                <option value="${t.id}">${t.name}</option>
+            `;
+        });
+
+    });
+}
+
+function loadTestQuestions(){
+
+    let testId = document.getElementById("studentTestSelect").value;
+
+    if(testId === ""){
+    document.getElementById("testSection").style.display = "none";
+    return;
+}
+
+    fetch("http://localhost:8080/api/tests")
+    .then(res => res.json())
+    .then(data => {
+
+        let selectedTest = data.find(t => t.id === testId);
+
+        console.log("SELECTED TEST:", selectedTest);
+
+        if(!selectedTest){
+            alert("Test not found");
+            return;
+        }
+
+        // 🔥 SET QUESTIONS FROM BACKEND
+        questions = selectedTest.questions || [];
+
+        document.getElementById("testSection").style.display = "block";
+
+        currentQuestion = 0;
+        answers = new Array(questions.length).fill(null);
+
+        generatePalette();
+        loadQuestion();
+    });
+}
+
+function loadQuestion(){
+
+if(questions.length === 0){
+    document.getElementById("questionText").innerHTML = `
+        <div style="text-align:center; padding:40px;">
+            <h4>No Test Selected</h4>
+            <p>Please select a test from above</p>
+        </div>
+    `;
+
+    document.getElementById("progress").innerText = "";
+
+    // hide options
+    document.querySelectorAll('input[name="option"]').forEach(r => r.parentElement.style.display = "none");
+
+    return;
+}
+
+let q = questions[currentQuestion];
+
+console.log("CURRENT QUESTION:", q);
+
+
+document.getElementById("questionText").innerText =
+"Q"+(currentQuestion+1)+". "+q.question;
+
+document.getElementById("opt0").innerText = q.options[0];
+document.getElementById("opt1").innerText = q.options[1];
+document.getElementById("opt2").innerText = q.options[2];
+document.getElementById("opt3").innerText = q.options[3];
+
+document.querySelectorAll('input[name="option"]').forEach(r => r.parentElement.style.display = "block");
+
+let radios = document.getElementsByName("option");
+
+radios.forEach(r => r.checked = false);
+
+if(answers[currentQuestion] !== null){
+radios[answers[currentQuestion]].checked = true;
+}
+
+updatePalette();   // ⭐ THIS LINE WAS MISSING
+
+}
+
+function saveAnswer(){
+
+let selected = document.querySelector('input[name="option"]:checked');
+
+if(selected){
+answers[currentQuestion] = parseInt(selected.value);
+}
+
+}
+
+function nextQuestion(){
+
+saveAnswer();
+
+if(currentQuestion < questions.length-1){
+currentQuestion++;
+loadQuestion();
+}
+
+}
+
+function prevQuestion(){
+
+saveAnswer();
+
+if(currentQuestion > 0){
+currentQuestion--;
+loadQuestion();
+}
+
+}
+
+function submitTest(){
+
+saveAnswer();
+
+let score = 0;
+let labels = ["A","B","C","D"];
+
+for(let i=0;i<questions.length;i++){
+if(answers[i] == questions[i].correct){
+score++;
+}
+}
+
+let resultHTML = `
+<div class="container mt-5">
+
+<div class="card text-center shadow-sm mb-5 p-4">
+<h2>Test Result</h2>
+<h1 style="color:#0f7c82">${score} / ${questions.length}</h1>
+<p>Score: ${(score/questions.length*100).toFixed(1)}%</p>
+</div>
+`;
+
+for(let i=0;i<questions.length;i++){
+
+let q = questions[i];
+let userAnswer = answers[i];
+let correct = q.correct;
+
+resultHTML += `
+<div class="card mb-4 shadow-sm">
+<div class="card-body">
+
+<h5 class="mb-4">Q${i+1}. ${q.question}</h5>
+`;
+
+for(let j=0;j<4;j++){
+
+let style = "padding:10px;border-radius:6px;margin-bottom:8px;";
+let text = `${labels[j]}) ${q.options[j]}`;
+
+if(j == correct){
+style += "background:#d4edda;color:#155724;font-weight:600;";
+text += " ✔ Correct Answer";
+}
+
+if(j == userAnswer && j != correct){
+style += "background:#f8d7da;color:#721c24;font-weight:600;";
+text += " ❌ Your Answer";
+}
+
+resultHTML += `<div style="${style}">${text}</div>`;
+}
+
+resultHTML += `</div></div>`;
+}
+
+resultHTML += `</div>`;
+
+document.body.innerHTML = resultHTML;
+
+}
+
+
+
+function generatePalette(){
+
+let palette = document.getElementById("paletteButtons");
+
+palette.innerHTML = "";
+
+for(let i=0;i<questions.length;i++){
+
+let btn = document.createElement("button");
+
+btn.innerText = i+1;
+
+btn.classList.add("notVisited");
+
+btn.onclick = function(){
+
+saveAnswer();
+
+currentQuestion = i;
+
+loadQuestion();
+
+updatePalette();
+
+}
+
+palette.appendChild(btn);
+
+}
+
+}
+
+function updatePalette(){
+
+let buttons = document.querySelectorAll("#paletteButtons button");
+
+buttons.forEach((btn,i)=>{
+
+btn.classList.remove("answered","notVisited","current");
+
+if(answers[i] !== null){
+btn.classList.add("answered");
+}else{
+btn.classList.add("notVisited");
+}
+
+if(i === currentQuestion){
+btn.classList.add("current");
+}
+
+});
+
+}
+
+window.onload = function(){
+    loadTestsForStudents();
+};
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

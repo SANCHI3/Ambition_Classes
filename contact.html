@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Contact - Ambition Classes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+margin:0;
+}
+
+:root{
+--teal:#0f7c82;
+--yellow:#f4c430;
+--purple:#4b2e83;
+}
+
+/* Navbar */
+
+.navbar{
+    background-color: var(--teal);
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.logo-img{
+width:50px;
+height:50px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid var(--yellow);
+background:white;
+}
+
+/* Hero */
+
+.contact-hero{
+background:url('classroom2.jpeg') center/cover no-repeat;
+height:260px;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+}
+
+.contact-hero::after{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+top:0;
+left:0;
+}
+
+.contact-hero h1{
+position:relative;
+z-index:2;
+font-weight:bold;
+font-size:40px;
+}
+
+/* Contact Section */
+
+.contact-section{
+padding:70px 0;
+background:#f8f9fa;
+}
+
+.contact-card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+height:100%;
+}
+
+.contact-card i{
+font-size:22px;
+color:var(--purple);
+margin-right:10px;
+}
+
+.contact-card h5{
+font-weight:bold;
+color:var(--purple);
+}
+
+/* Form */
+
+.contact-form{
+background:white;
+padding:35px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.form-control{
+border-radius:8px;
+padding:10px;
+}
+
+.btn-send{
+background:var(--yellow);
+font-weight:600;
+}
+
+/* Map */
+
+.map-section{
+padding-bottom:70px;
+}
+
+/* Footer */
+
+footer{
+background:var(--teal);
+color:white;
+padding:20px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+
+<div class="container">
+
+<a class="navbar-brand d-flex align-items-center fw-bold text-white" href="index.html">
+<img src="logo.jpeg" class="logo-img me-2">
+Ambition Classes
+</a>
+
+<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="nav">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+<a class="nav-link text-white" href="index.html">Home</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="about.html">About</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="courses.html">Courses</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="mocktest.html">Mock Test</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="results.html">Results</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="gallery.html">Gallery</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="branches.html">Branches</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="contact.html">Contact</a>
+</li>
+
+<li class="nav-item dropdown">
+
+<a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+Login
+</a>
+
+<ul class="dropdown-menu">
+
+<li><a class="dropdown-item" href="student-login.html">Student Login</a></li>
+<li><a class="dropdown-item" href="parent-login.html">Parent Login</a></li>
+<li><a class="dropdown-item" href="admin-login.html">Admin Login</a></li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</div>
+</div>
+</nav>
+
+<!-- Hero -->
+
+<section class="contact-hero">
+<h1>Contact Us</h1>
+</section>
+
+<!-- Contact Section -->
+
+<section class="contact-section">
+
+<div class="container">
+
+<div class="row g-4">
+
+<!-- Contact Info -->
+
+<div class="col-md-4">
+
+<div class="contact-card">
+
+<h5 class="mb-4">Get in Touch</h5>
+
+<p><i class="fa fa-phone"></i> +91 9921581237</p>
+
+<p><i class="fa fa-envelope"></i> ambitionclasses@gmail.com</p>
+
+<p>
+<i class="fa fa-location-dot"></i>
+VIP Market, Near Bus Stand,<br>
+Ojhar (MIG), Nashik
+</p>
+
+</div>
+
+</div>
+
+<!-- Contact Form -->
+
+<div class="col-md-8">
+
+<div class="contact-form">
+
+<h5 class="mb-4">Send a Message</h5>
+
+<form onsubmit="sendEmail(event)">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<input type="text" class="form-control" placeholder="Full Name">
+</div>
+
+<div class="col-md-6 mb-3">
+<input type="text" class="form-control" placeholder="Phone Number">
+</div>
+
+</div>
+
+<div class="mb-3">
+<input type="email" class="form-control" placeholder="Email">
+</div>
+
+<div class="mb-3">
+<textarea class="form-control" rows="4" placeholder="Message"></textarea>
+</div>
+
+<button type="button" class="btn btn-send" onclick="sendEmail(event)">
+    Send Message
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Map -->
+
+<section class="container map-section">
+
+<h4 class="text-center mb-4">Find Us on Map</h4>
+
+<div class="ratio ratio-16x9">
+
+<iframe 
+src="https://maps.google.com/maps?q=VIP%20Market%20Ojhar%20Nashik&t=&z=15&ie=UTF8&iwloc=&output=embed"
+style="border:0;"
+allowfullscreen=""
+loading="lazy">
+</iframe>
+
+</div>
+
+</section>
+
+<footer class="text-center">
+
+© 2026 Ambition Classes | All Rights Reserved
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+<script>
+async function sendEmail(event){
+    event.preventDefault();
+
+    let name = document.querySelector("input[placeholder='Full Name']").value;
+    let phone = document.querySelector("input[placeholder='Phone Number']").value;
+    let email = document.querySelector("input[placeholder='Email']").value;
+    let message = document.querySelector("textarea").value;
+
+    if(name === "" || phone === "" || message === ""){
+        alert("Fill all fields");
+        return;
+    }
+
+    await fetch("http://localhost:8080/api/contact", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name, phone, email, message
+        })
+    });
+
+    document.querySelector(".contact-form").innerHTML =
+    "<h4 style='color:green;'>Message sent successfully!</h4>";
+
+    document.querySelector("form").reset();
+}
+</script>
+</html>

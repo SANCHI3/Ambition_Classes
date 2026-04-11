@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Student Dashboard | Ambition Classes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#f4f6f9;
+}
+
+/* Sidebar */
+
+.sidebar{
+height:100vh;
+width:230px;
+background:#0f7c82;
+position:fixed;
+color:white;
+padding-top:20px;
+}
+
+.sidebar h4{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+padding:12px 20px;
+}
+
+.sidebar a:hover{
+background:#0a5c60;
+}
+
+/* Main */
+
+.main{
+margin-left:230px;
+padding:30px;
+}
+
+/* Cards */
+
+.dashboard-card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+.dashboard-card h3{
+color:#4b2e83;
+font-weight:bold;
+}
+
+/* Tables */
+
+.table-box{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+margin-top:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h4>Student Panel</h4>
+
+<a href="#"><i class="fa fa-home me-2"></i> Dashboard</a>
+<a href="#"><i class="fa fa-calendar-check me-2"></i> Attendance</a>
+<a href="#"><i class="fa fa-clipboard-list me-2"></i> Test Results</a>
+<a href="#"><i class="fa fa-money-bill me-2"></i> Fees</a>
+<a href="#" onclick="goToChangePassword()">Change Password</a>
+<a href="#" onclick="logout()">Logout</a>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<h2 class="mb-4">Student Dashboard</h2>
+<h3 id="name"></h3>
+<p id="class"></p>
+<p id="fees"></p>
+<p id="totalFees"></p>
+<p id="paidAmount"></p>
+<p id="remainingFees"></p>
+<!-- Cards -->
+
+<div class="row g-4">
+
+<div class="col-md-4">
+
+<div class="dashboard-card">
+
+<h5>Total Attendance</h5>
+
+<h3 id="attendancePercent">0%</h3>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="dashboard-card">
+
+<h5>Latest Test Marks</h5>
+
+<h3 id="latestMarks">0</h3>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="dashboard-card">
+
+<h5>Fees Status</h5>
+
+<h3 id="feesStatus">Pending</h3>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Attendance Table -->
+
+<div class="table-box">
+
+<h4>Attendance Records</h4>
+
+<table class="table table-bordered mt-3">
+
+<thead class="table-dark">
+
+<tr>
+<th>Date</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="attendanceTable"></tbody>
+
+</table>
+
+</div>
+
+<!-- Test Results -->
+
+<div class="table-box">
+
+<h4>Weekly Test Results</h4>
+
+<table class="table table-bordered mt-3">
+
+<thead class="table-dark">
+
+<tr>
+<th>Test Name</th>
+<th>Marks</th>
+</tr>
+
+</thead>
+
+<tbody id="resultTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+// 🔥 GET LOGGED IN USER
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(!user){
+    alert("Please login first");
+    window.location.href = "student-login.html";
+}
+
+// 🔥 LOAD STUDENT DATA FROM BACKEND
+async function loadStudent(){
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log("Logged user:", user); // 🔥 debug
+
+    const res = await fetch(`http://localhost:8080/api/student/mobile/${user.username}`);
+    const data = await res.json();
+
+    document.getElementById("name").innerText = data.name;
+    document.getElementById("class").innerText = data.className;
+    document.getElementById("fees").innerText =
+    "Fees: ₹" + data.paidAmount + " / " + data.totalFees;
+}
+
+loadStudent();
+
+// 🔥 LOAD ATTENDANCE (FROM LOCAL FOR NOW)
+async function loadAttendance(){
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const res = await fetch(`http://localhost:8080/api/attendance/student/${user.username}`);
+
+    const data = await res.json();
+
+    console.log("Attendance:", data);
+
+    // 🔥 ADD HERE
+    const total = data.length;
+    const present = data.filter(a => a.status === "Present").length;
+
+    const percent = total === 0 ? 0 : Math.round((present / total) * 100);
+
+    document.querySelector("#attendancePercent").innerText = percent + "%";
+
+    // 🔽 existing table code
+    let html = "";
+
+    data.forEach(d => {
+        html += `
+            <tr>
+                <td>${d.date}</td>
+                <td>${d.status}</td>
+            </tr>
+        `;
+    });
+
+    document.querySelector("#attendanceTable").innerHTML = html;
+}
+
+loadAttendance();
+
+
+// 🔥 LOAD RESULTS
+async function loadTests(){
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    try {
+
+        const res = await fetch(`http://localhost:8080/api/results/student/${user.username}`);
+
+        // 🔴 HANDLE ERROR FIRST
+        if (!res.ok) {
+            console.log("API failed:", res.status);
+            return;
+        }
+
+        // 🔴 HANDLE EMPTY RESPONSE
+        const text = await res.text();
+
+        if (!text) {
+            console.log("Empty response");
+            return;
+        }
+
+        const data = JSON.parse(text);
+        console.log("REAL TEST DATA:", data);
+
+        console.log("Tests:", data);
+
+        if (!Array.isArray(data)) return;
+
+        let html = "";
+
+        data.forEach(t => {
+            html += `<tr>
+                        <td>${t.testName ? t.testName : "No Test"}</td>
+                        <td>${t.marks}</td>
+                     </tr>`;
+        });
+
+        document.querySelector("#resultTable").innerHTML = html;
+
+        if(data.length > 0){
+            document.querySelector("#latestMarks").innerText =
+                data[data.length - 1].marks;
+        }
+
+    } catch (e) {
+        console.log("Error:", e);
+    }
+}
+// 🔥 LOAD FEES (OPTIONAL LOCAL FALLBACK)
+async function loadFees(){
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    try {
+
+        const res = await fetch(`http://localhost:8080/api/student/mobile/${user.username}`);
+
+        if (!res.ok) return;
+
+        const data = await res.json();
+
+        // 🔥 STATUS
+        let statusEl = document.getElementById("feesStatus");
+        statusEl.innerText = data.feesStatus;
+
+        if(data.feesStatus === "Paid"){
+            statusEl.style.color = "green";
+        }
+        else if(data.feesStatus === "Partial"){
+            statusEl.style.color = "orange";
+        }
+        else{
+            statusEl.style.color = "red";
+        }
+
+        // 🔥 YOUR CODE GOES HERE 👇
+        document.getElementById("totalFees").innerText = "Total: ₹" + data.totalFees;
+        document.getElementById("paidAmount").innerText = "Paid: ₹" + data.paidAmount;
+        document.getElementById("remainingFees").innerText =
+            "Remaining: ₹" + (data.totalFees - data.paidAmount);
+
+    } catch (e) {
+        console.log("Fees error:", e);
+    }
+}
+
+// 🚀 INITIAL LOAD
+loadStudent();
+loadAttendance();
+loadTests();
+loadFees();
+
+</script>
+<script>
+function goToChangePassword(){
+    window.location.href = "change-password.html";
+}
+
+function logout(){
+    localStorage.removeItem("user");
+    window.location.href = "student-login.html";
+}
+</script>
+</body>
+
+</html>
