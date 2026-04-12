@@ -45,12 +45,9 @@ background:white;
 /* Hero */
 
 .carousel-item{
-  height: 55vh;
+  height: 50vh;
 }
 
-.carousel{
-  margin-bottom: -30px;
-}
 
 .carousel-item img{
 height:100%;
@@ -68,8 +65,9 @@ left:0;
 }
 
 .carousel-caption{
-bottom:20%;
-text-align:left;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
 }
 
 .carousel-caption h1{
@@ -193,24 +191,17 @@ padding:20px 0;
 
 @media (max-width: 768px){
 
-  .carousel-caption{
-    bottom: 12%;
-    text-align: center;
-    padding: 0 15px;
-  }
-
   .carousel-caption h1{
-    font-size: 22px;   /* ↓ reduced more */
-    line-height: 1.3;
+    font-size: 20px;
   }
 
   .carousel-caption p{
-    font-size: 13px;
+    font-size: 12px;
   }
 
 }
 
-}
+
 
 
 </style>
