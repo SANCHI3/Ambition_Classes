@@ -1,3 +1,4 @@
+const BASE_URL = "https://ambition-classes-backend.onrender.com";
 const attStudent = document.getElementById("attStudent");
 const attClass = document.getElementById("attClass");
 attClass.addEventListener("change", loadStudentsDropdown);
@@ -7,7 +8,7 @@ const attendanceTable = document.getElementById("attendanceTable");
 const attendanceSummary = document.getElementById("attendanceSummary");
     function checkStudentExists(studentMobile, callback){
 
-    fetch("http://localhost:8080/api/student/all")
+    fetch(`${BASE_URL}api/student/all`)
     .then(res => res.json())
     .then(data => {
         let exists = data.some(s => s.studentMobile === studentMobile);
@@ -73,11 +74,11 @@ checkStudentExists(studentMobile, function(exists){
 
 
 
-    let url = "http://localhost:8080/api/students";
+    let url = `${BASE_URL}/api/students`;
     let method = "POST";
 
     if(editId){
-        url = `http://localhost:8080/api/students/${editId}`;
+        url = `${BASE_URL}/api/students/${editId}`;
         method = "PUT";
     }
 
@@ -94,7 +95,7 @@ checkStudentExists(studentMobile, function(exists){
 })
 .then(() => {
 
-    return fetch("http://localhost:8080/api/users/create-student", {
+    return fetch(`${BASE_URL}/api/users/create-student`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -130,7 +131,7 @@ function loadStudents(){
     
 
     console.log("LOAD STUDENTS CALLED");
-    fetch("http://localhost:8080/api/student/all")
+    fetch(`${BASE_URL}/api/student/all`)
     .then(res => res.json())
     .then(data => {
         console.log("DATA:", data); 
@@ -172,7 +173,7 @@ function loadStudents(){
 
 }
 function loadStudentsDropdown() {
-    fetch("http://localhost:8080/api/student/all")
+    fetch(`${BASE_URL}/api/student/all`)
         .then(res => res.json())
         .then(data => {
 
@@ -196,7 +197,7 @@ function resetFilters(){
 }
 function editStudent(id){
 
-    fetch(`http://localhost:8080/api/students/${id}`)
+    fetch(`${BASE_URL}/api/students/${id}`)
     .then(res => res.json())
     .then(s => {
 
@@ -218,7 +219,7 @@ function deleteStudent(mobile){
         return;
     }
 
-    fetch(`http://localhost:8080/api/students/mobile/${studentMobile}`, {
+    fetch(`${BASE_URL}/api/students/mobile/${studentMobile}`, {
         method: "DELETE"
     })
     .then(res => {
@@ -238,7 +239,7 @@ function deleteStudent(mobile){
 
 function loadStudentsAttendance() {
 
-    fetch("http://localhost:8080/api/student/all")
+    fetch("${BASE_URL}/api/student/all")
         .then(res => res.json())
         .then(students => {
 
@@ -275,7 +276,7 @@ function saveAttendance() {
 
     console.log("FINAL DATA:", attendanceData);
 
-    fetch("http://localhost:8080/api/attendance", {
+    fetch(`${BASE_URL}/api/attendance`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -294,7 +295,7 @@ function saveAttendance() {
 
 function displayAttendance() {
 
-    fetch("http://localhost:8080/api/attendance")
+    fetch(`${BASE_URL}/api/attendance`)
         .then(res => res.json())
         .then(attendance => {
 
@@ -333,7 +334,7 @@ function displayAttendance() {
 
 function editAttendance(id) {
 
-    fetch(`http://localhost:8080/api/attendance/${id}`)
+    fetch(`${BASE_URL}/api/attendance/${id}`)
         .then(res => res.json())
         .then(a => {
 
@@ -346,7 +347,7 @@ function editAttendance(id) {
                 status: newStatus
             };
 
-            return fetch(`http://localhost:8080/api/attendance/${id}`, {
+            return fetch(`${BASE_URL}/api/attendance/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -377,7 +378,7 @@ function deleteAttendance(id){
 
 function calculateAttendance() {
 
-    fetch("http://localhost:8080/api/attendance")
+    fetch(`${BASE_URL}/api/attendance`)
         .then(res => res.json())
         .then(attendance => {
 
@@ -448,7 +449,7 @@ function updateAttendance(id){
     let newDate = document.getElementById(`edit-date-${id}`).value;
     let newStatus = document.getElementById(`edit-status-${id}`).value;
 
-    fetch(`http://localhost:8080/api/attendance/${id}`)
+    fetch(`${BASE_URL}/api/attendance/${id}`)
     .then(res => res.json())
     .then(a => {
 
@@ -458,7 +459,7 @@ function updateAttendance(id){
             status: newStatus
         };
 
-        return fetch(`http://localhost:8080/api/attendance/${id}`, {
+        return fetch(`${BASE_URL}/api/attendance/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -477,7 +478,7 @@ async function markAttendance() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const res = await fetch("http://localhost:8080/api/attendance", {
+    const res = await fetch(`${BASE_URL}/api/attendance`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -529,7 +530,7 @@ function saveResult() {
     marks: Number(marks.value)
 };
 
-    fetch("http://localhost:8080/api/results", {
+    fetch(`${BASE_URL}/api/results`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -563,7 +564,7 @@ function displayResults() {
     let filter = resultFilterClass.value;
     let search = document.getElementById("searchResult").value.toLowerCase();
 
-    fetch("http://localhost:8080/api/results")
+    fetch("${BASE_URL}/api/results")
         .then(res => res.json())
         .then(results => {
 
@@ -601,7 +602,7 @@ function displayResults() {
 
 function editResult(id) {
 
-    fetch(`http://localhost:8080/api/results/${id}`)
+    fetch(`${BASE_URL}/api/results/${id}`)
     .then(res => res.json())
     .then(r => {
 
@@ -614,7 +615,7 @@ function editResult(id) {
             marks: Number(newMarks)
         };
 
-        return fetch(`http://localhost:8080/api/results/${id}`, {
+        return fetch(`${BASE_URL}/api/results/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -634,7 +635,7 @@ function deleteResult(id) {
         return;
     }
 
-    fetch(`http://localhost:8080/api/results/${id}`, {
+    fetch(`${BASE_URL}/api/results/${id}`, {
         method: "DELETE"
     })
     .then(res => {
@@ -658,7 +659,7 @@ function loadStudentsResults() {
     const resultStudent = document.getElementById("resultStudent");
     const resultClass = document.getElementById("resultClass");
 
-    fetch("http://localhost:8080/api/student/all")
+    fetch("${BASE_URL}/api/student/all")
     .then(res => res.json())
     .then(students => {
 
@@ -687,7 +688,7 @@ function updateFees() {
         return;
     }
 
-    fetch(`http://localhost:8080/api/student/fees/${studentId}`, {
+    fetch(`${BASE_URL}/api/student/fees/${studentId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -707,7 +708,7 @@ function loadStudentsFees() {
     let feesClass = document.getElementById("feesClass").value;
     let feesStudent = document.getElementById("feesStudent");
 
-    fetch("http://localhost:8080/api/student/all")
+    fetch("${BASE_URL}/api/student/all")
     .then(res => res.json())
     .then(students => {
 
@@ -754,7 +755,7 @@ function addQuestion() {
         correct: correct
     };
 
-    fetch(`http://localhost:8080/api/tests/${testId}/questions`, {
+    fetch(`${BASE_URL}/api/tests/${testId}/questions`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -798,7 +799,7 @@ function createTest(){
         questions: []
     };
 
-    fetch("http://localhost:8080/api/tests", {
+    fetch(`${BASE_URL}/api/tests`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -827,7 +828,7 @@ function createTest(){
 
 function loadTestDropdown(){
 
-    fetch("http://localhost:8080/api/tests")
+    fetch(`${BASE_URL}/api/tests`)
     .then(res => res.json())
     .then(data => {
 
@@ -859,7 +860,7 @@ function deleteTest(id){
 
 function displayTests(){
 
-    fetch("http://localhost:8080/api/tests")
+    fetch(`${BASE_URL}/api/tests`)
     .then(res => res.json())
     .then(data => {
 
@@ -901,7 +902,7 @@ function getFullPath(photo) {
 
 async function loadEvents(){
 
-    const res = await fetch("http://localhost:8080/api/events");
+    const res = await fetch(`${BASE_URL}/api/events`);
     events = await res.json();
     const select = document.getElementById("eventSelect");
 select.innerHTML = "";
@@ -979,7 +980,7 @@ async function createNewEvent(){
         return;
     }
 
-    await fetch("http://localhost:8080/api/events", {
+    await fetch(`${BASE_URL}/api/events`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, photos: [] })
@@ -1012,7 +1013,7 @@ async function uploadPhoto(){
         formData.append("file", file);
         formData.append("eventId", eventId);
 
-        await fetch("http://localhost:8080/api/upload", {
+        await fetch(`${BASE_URL}/api/upload`, {
             method: "POST",
             body: formData
         });
@@ -1024,7 +1025,7 @@ async function uploadPhoto(){
 
 async function deletePhoto(eventId, photoPath){
 
-    await fetch(`http://localhost:8080/api/photo?eventId=${eventId}&photoPath=${photoPath}`, {
+    await fetch(`${BASE_URL}/api/photo?eventId=${eventId}&photoPath=${photoPath}`, {
         method: "DELETE"
     });
 
@@ -1036,7 +1037,7 @@ async function deleteEvent(eventId){
 
     if(!confirm("Delete this event?")) return;
 
-    await fetch(`http://localhost:8080/api/event/${eventId}`, {
+    await fetch(`${BASE_URL}/api/event/${eventId}`, {
         method: "DELETE"
     });
 
@@ -1048,7 +1049,7 @@ loadEvents();
 
 async function loadGallery(){
 
-    const res = await fetch("http://localhost:8080/api/events");
+    const res = await fetch(`${BASE_URL}/api/events`);
     const events = await res.json();
 
     const container = document.getElementById("galleryContainer");
@@ -1068,7 +1069,7 @@ async function loadGallery(){
                      style="cursor:pointer;"
                      onclick="openEvent(${index})">
 
-                    <img src="http://localhost:8080/${event.photos[0]}" 
+                    <img src="${BASE_URL}/${event.photos[0]}" 
                          style="height:180px;object-fit:cover;">
 
                     <div class="p-3 text-center">
@@ -1120,7 +1121,7 @@ function uploadResultImage() {
     const formData = new FormData();
     formData.append("file", file);
 
-    fetch("http://localhost:8080/api/result-images/upload", {
+    fetch(`${BASE_URL}/api/result-images/upload`, {
         method: "POST",
         body: formData
     })
@@ -1132,7 +1133,7 @@ function uploadResultImage() {
 
 function loadResultImages() {
 
-    fetch("http://localhost:8080/api/result-images")
+    fetch(`${BASE_URL}/api/result-images`)
         .then(res => res.json())
         .then(images => {
 
@@ -1142,7 +1143,7 @@ function loadResultImages() {
             images.forEach(img => {
                 container.innerHTML += `
                 <div class="image-card">
-                    <img src="http://localhost:8080/${img.image}" />
+                    <img src="${BASE_URL}/${img.image}" />
                     <button class="delete-btn" onclick="deleteImage('${img.id}')">Delete</button>
                 </div>
             `;
@@ -1152,7 +1153,7 @@ function loadResultImages() {
 }
 
 function deleteImage(id) {
-    fetch(`http://localhost:8080/api/result-images/${id}`, {
+    fetch(`${BASE_URL}/api/result-images/${id}`, {
         method: "DELETE"
     }).then(() => loadResultImages());
 }
