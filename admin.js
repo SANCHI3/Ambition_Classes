@@ -8,7 +8,7 @@ const attendanceTable = document.getElementById("attendanceTable");
 const attendanceSummary = document.getElementById("attendanceSummary");
     function checkStudentExists(studentMobile, callback){
 
-    fetch(`${BASE_URL}api/student/all`)
+    fetch(`${BASE_URL}/api/student/all`)
     .then(res => res.json())
     .then(data => {
         let exists = data.some(s => s.studentMobile === studentMobile);
@@ -564,7 +564,7 @@ function displayResults() {
     let filter = resultFilterClass.value;
     let search = document.getElementById("searchResult").value.toLowerCase();
 
-    fetch("${BASE_URL}/api/results")
+    fetch(`${BASE_URL}/api/results`)
         .then(res => res.json())
         .then(results => {
 
@@ -659,7 +659,7 @@ function loadStudentsResults() {
     const resultStudent = document.getElementById("resultStudent");
     const resultClass = document.getElementById("resultClass");
 
-    fetch("${BASE_URL}/api/student/all")
+    fetch(`${BASE_URL}/api/student/all`)
     .then(res => res.json())
     .then(students => {
 
@@ -849,7 +849,7 @@ function deleteTest(id){
         return;
     }
 
-    fetch(`http://localhost:8080/api/tests/${id}`, {
+    fetch(`${BASE_URL}/api/tests/${id}`, {
         method: "DELETE"
     })
     .then(() => {
@@ -1069,7 +1069,7 @@ async function loadGallery(){
                      style="cursor:pointer;"
                      onclick="openEvent(${index})">
 
-                    <img src="${BASE_URL}/${event.photos[0]}" 
+                    <img src=`${BASE_URL}/${event.photos[0]}` 
                          style="height:180px;object-fit:cover;">
 
                     <div class="p-3 text-center">
@@ -1143,7 +1143,7 @@ function loadResultImages() {
             images.forEach(img => {
                 container.innerHTML += `
                 <div class="image-card">
-                    <img src="${BASE_URL}/${img.image}" />
+                    <img src=`${BASE_URL}/${img.image}` />
                     <button class="delete-btn" onclick="deleteImage('${img.id}')">Delete</button>
                 </div>
             `;
