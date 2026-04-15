@@ -201,7 +201,7 @@ margin-top:30px;
 </div>
 
 <script>
-
+const BASE_URL = "https://ambition-classes-backend.onrender.com";
 // 🔥 GET LOGGED IN USER
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -217,7 +217,7 @@ async function loadStudent(){
 
     console.log("Logged user:", user); // 🔥 debug
 
-    const res = await fetch(`http://localhost:8080/api/student/mobile/${user.username}`);
+    const res = await fetch(`${BASE_URL}/api/student/mobile/${user.username}`);
     const data = await res.json();
 
     document.getElementById("name").innerText = data.name;
@@ -226,14 +226,13 @@ async function loadStudent(){
     "Fees: ₹" + data.paidAmount + " / " + data.totalFees;
 }
 
-loadStudent();
 
 // 🔥 LOAD ATTENDANCE (FROM LOCAL FOR NOW)
 async function loadAttendance(){
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const res = await fetch(`http://localhost:8080/api/attendance/student/${user.username}`);
+    const res = await fetch(`${BASE_URL}/api/attendance/student/${user.username}`);
 
     const data = await res.json();
 
@@ -272,7 +271,7 @@ async function loadTests(){
 
     try {
 
-        const res = await fetch(`http://localhost:8080/api/results/student/${user.username}`);
+        const res = await fetch(`${BASE_URL}/api/results/student/${user.username}`);
 
         // 🔴 HANDLE ERROR FIRST
         if (!res.ok) {
@@ -322,7 +321,7 @@ async function loadFees(){
 
     try {
 
-        const res = await fetch(`http://localhost:8080/api/student/mobile/${user.username}`);
+        const res = await fetch(`${BASE_URL}/api/student/mobile/${user.username}`);
 
         if (!res.ok) return;
 
