@@ -239,7 +239,7 @@ function deleteStudent(mobile){
 
 function loadStudentsAttendance() {
 
-    fetch("${BASE_URL}/api/student/all")
+    fetch(`${BASE_URL}/api/student/all`)
         .then(res => res.json())
         .then(students => {
 
@@ -708,7 +708,7 @@ function loadStudentsFees() {
     let feesClass = document.getElementById("feesClass").value;
     let feesStudent = document.getElementById("feesStudent");
 
-    fetch("${BASE_URL}/api/student/all")
+    fetch(`${BASE_URL}/api/student/all`)
     .then(res => res.json())
     .then(students => {
 
