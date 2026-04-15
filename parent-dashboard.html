@@ -133,7 +133,7 @@ margin-top:30px;
 </div>
 
 <script>
-
+const BASE_URL = "https://ambition-classes-backend.onrender.com";
 // ✅ GET USER (ONLY ONCE)
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -160,7 +160,7 @@ async function loadChildren(){
     for(const mobile of user.children){
 
         try{
-            const res = await fetch(`http://localhost:8080/api/student/mobile/${mobile}`);
+            const res = await fetch(`${BASE_URL}/api/student/mobile/${mobile}`);
             const data = await res.json();
 
             html += `<option value="${mobile}">
@@ -191,7 +191,7 @@ function getSelectedChild(){
 
 async function loadResults(){
 
-    const res = await fetch(`http://localhost:8080/api/results/student/${getSelectedChild()}`);
+    const res = await fetch(`${BASE_URL}/api/results/student/${getSelectedChild()}`);
     const data = await res.json();
 
     let html = "";
@@ -219,7 +219,7 @@ async function loadResults(){
 
 async function loadAttendance(){
 
-    const res = await fetch(`http://localhost:8080/api/attendance/student/${getSelectedChild()}`);
+    const res = await fetch(`${BASE_URL}/api/attendance/student/${getSelectedChild()}`);
     const data = await res.json();
 
     const total = data.length;
@@ -236,7 +236,7 @@ async function loadAttendance(){
 
 async function loadFees(){
 
-    const res = await fetch(`http://localhost:8080/api/student/mobile/${getSelectedChild()}`);
+    const res = await fetch(`${BASE_URL}/api/student/mobile/${getSelectedChild()}`);
     const data = await res.json();
 
     let status = "";
@@ -288,7 +288,7 @@ function goToChangePassword(){
 
 function logout(){
     localStorage.removeItem("user");
-    window.location.href = "admin-login.html";
+    window.location.href = "parent-login.html";
 }
 </script>
 </body>
