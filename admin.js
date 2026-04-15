@@ -219,7 +219,7 @@ function deleteStudent(mobile){
         return;
     }
 
-    fetch(`${BASE_URL}/api/students/mobile/${studentMobile}`, {
+    fetch(`${BASE_URL}/api/students/mobile/${mobile}`, {
         method: "DELETE"
     })
     .then(res => {
@@ -366,7 +366,7 @@ function deleteAttendance(id){
 
     if(!confirm("Delete this attendance?")) return;
 
-    fetch(`http://localhost:8080/api/attendance/${id}`, {
+    fetch(`${BASE_URL}/api/attendance/${id}`, {
         method: "DELETE"
     })
     .then(() => {
@@ -897,7 +897,7 @@ function getFullPath(photo) {
         photo = "uploads/" + photo;
     }
 
-    return "http://localhost:8080/" + photo;
+    return `${BASE_URL}/` + photo;
 }
 
 async function loadEvents(){
@@ -1069,7 +1069,7 @@ async function loadGallery(){
                      style="cursor:pointer;"
                      onclick="openEvent(${index})">
 
-                    <img src=`${BASE_URL}/${event.photos[0]}` 
+                    <img src="${BASE_URL}/${event.photos[0]}" 
                          style="height:180px;object-fit:cover;">
 
                     <div class="p-3 text-center">
@@ -1143,7 +1143,7 @@ function loadResultImages() {
             images.forEach(img => {
                 container.innerHTML += `
                 <div class="image-card">
-                    <img src=`${BASE_URL}/${img.image}` />
+                    <img src="${BASE_URL}/${img.image}" />
                     <button class="delete-btn" onclick="deleteImage('${img.id}')">Delete</button>
                 </div>
             `;
