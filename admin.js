@@ -54,7 +54,7 @@ alert("Enter valid 10 digit mobile number");
 return;
 }
 
-checkStudentExists(studentMobile, function(exists){
+checkStudentExists(studentMobile, function(exists)){
 
     let editId = localStorage.getItem("editId");
 
@@ -74,33 +74,14 @@ checkStudentExists(studentMobile, function(exists){
 
 
 
-    let url = `${BASE_URL}/api/students`;
-    let method = "POST";
+   
 
-    if(editId){
-        url = `${BASE_URL}/api/students/${editId}`;
-        method = "PUT";
-    }
-
-   fetch(url, {
-    method: method,
+   fetch(`${BASE_URL}/api/users/create-student`, {
+    method: "POST",
     headers: {
         "Content-Type": "application/json"
     },
-    body: JSON.stringify(student)
-})
-.then(res => {
-    if(!res.ok) throw new Error("Student save failed");
-    return res.text();
-})
-.then(() => {
-
-    return fetch(`${BASE_URL}/api/users/create-student`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+    body: JSON.stringify({
         name: studentName,
         studentMobile: studentMobile,
         parentMobile: parentMobile,
@@ -108,11 +89,9 @@ checkStudentExists(studentMobile, function(exists){
         totalFees: Number(totalFees),
         paidAmount: Number(paidAmount)
     })
-    });
-
 })
 .then(res => {
-    if(!res.ok) throw new Error("User creation failed ❌");
+    if(!res.ok) throw new Error("Failed ❌");
     return res.text();
 })
 .then(() => {
@@ -123,9 +102,7 @@ checkStudentExists(studentMobile, function(exists){
     console.error(err);
     alert("Something failed ❌ CHECK CONSOLE");
 });
-
-});
-}
+}}
 
 function loadStudents(){
     
@@ -197,7 +174,7 @@ function resetFilters(){
 }
 function editStudent(id){
 
-    fetch(`${BASE_URL}/api/students/${id}`)
+    fetch(`${BASE_URL}/api/student/${id}`)
     .then(res => res.json())
     .then(s => {
 
@@ -219,7 +196,7 @@ function deleteStudent(mobile){
         return;
     }
 
-    fetch(`${BASE_URL}/api/students/mobile/${mobile}`, {
+    fetch(`${BASE_URL}/api/student/mobile/${mobile}`, {
         method: "DELETE"
     })
     .then(res => {
