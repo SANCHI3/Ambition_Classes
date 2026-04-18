@@ -54,7 +54,8 @@ alert("Enter valid 10 digit mobile number");
 return;
 }
 
-checkStudentExists(studentMobile, function(exists)){
+checkStudentExists(studentMobile, function(exists){
+
 
     let editId = localStorage.getItem("editId");
 
@@ -101,8 +102,9 @@ checkStudentExists(studentMobile, function(exists)){
 .catch(err => {
     console.error(err);
     alert("Something failed ❌ CHECK CONSOLE");
+    });
 });
-}}
+}
 
 function loadStudents(){
     
