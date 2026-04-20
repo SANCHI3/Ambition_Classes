@@ -49,12 +49,6 @@ async function login(){
         body: JSON.stringify({username, password})
     });
 
-    const user = JSON.parse(localStorage.getItem("user"));
-
-if(!user || user.role !== "student"){
-    window.location.href = "admin-login.html";
-}
-
     if(!res.ok){
         alert("Invalid credentials");
         return;
@@ -64,13 +58,11 @@ if(!user || user.role !== "student"){
 
     localStorage.setItem("user", JSON.stringify(user));
 
-    // 🔥 FIRST LOGIN CHECK
     if(user.firstLogin){
         window.location.href = "change-password.html";
         return;
     }
 
-    // 🔥 ROLE BASED REDIRECTION
     if(user.role === "admin"){
         window.location.href = "admin-dashboard.html";
     }
