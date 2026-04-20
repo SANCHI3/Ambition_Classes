@@ -45,9 +45,8 @@ async function login(){
     const password = document.getElementById("password").value.trim();
     const msg = document.getElementById("msg");
 
-    msg.innerText = ""; // clear old message
+    msg.innerText = "";
 
-    // 🔥 BASIC VALIDATION
     if(!username || !password){
         msg.innerText = "Enter username and password";
         return;
@@ -67,18 +66,15 @@ async function login(){
 
         const user = await res.json();
 
-        console.log("LOGIN USER:", user); // 🔥 DEBUG
+        console.log("LOGIN USER:", user);
 
-        // 🔥 SAVE USER
         localStorage.setItem("user", JSON.stringify(user));
 
-        // 🔥 FIRST LOGIN
         if(user.firstLogin){
             window.location.href = "change-password.html";
             return;
         }
 
-        // 🔥 ROLE BASED REDIRECT (SAFE)
         const role = user.role?.toLowerCase();
 
         if(role === "admin"){
@@ -96,7 +92,7 @@ async function login(){
 
     } catch(err){
         console.error(err);
-        msg.innerText = "Server error. Try again.";
+        msg.innerText = "Server error";
     }
 }
 </script>
