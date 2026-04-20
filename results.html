@@ -335,7 +335,7 @@ async function loadResults() {
     container.innerHTML += `
         <div class="col-md-4">
             <div class="result-card">
-               <img src="${BASE_URL}/${r.image.startsWith('/') ? r.image.substring(1) : r.image}" />
+               <img src="${BASE_URL}/uploads/${r.image}" />
             </div>
         </div>
     `;
