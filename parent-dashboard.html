@@ -108,6 +108,7 @@ margin-top:30px;
 <div class="dashboard-card">
 <h5>Fees Status</h5>
 <h3 id="feesStatus">Pending</h3>
+<p id="remainingFees" style="margin:0;"></p>
 </div>
 </div>
 
@@ -239,6 +240,8 @@ async function loadFees(){
     const res = await fetch(`${BASE_URL}/api/student/mobile/${getSelectedChild()}`);
     const data = await res.json();
 
+    const remaining = data.totalFees - data.paidAmount;
+
     let status = "";
 
     if(data.paidAmount >= data.totalFees){
@@ -252,11 +255,23 @@ async function loadFees(){
     }
 
     const el = document.getElementById("feesStatus");
+    const rem = document.getElementById("remainingFees");
+
     el.innerText = status;
 
+    // 🎨 COLORS
     if(status === "Paid") el.style.color = "green";
     else if(status === "Partial") el.style.color = "orange";
     else el.style.color = "red";
+
+    // 💰 SHOW REMAINING
+    if(remaining > 0){
+        rem.innerText = `Remaining: ₹${remaining}`;
+        rem.style.color = "red";
+    } else {
+        rem.innerText = "All fees paid ✅";
+        rem.style.color = "green";
+    }
 }
 
 // =======================
