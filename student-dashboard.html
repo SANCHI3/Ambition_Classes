@@ -37,40 +37,66 @@ text-align:center;
 </div>
 
 <script>
-    const BASE_URL = "https://ambition-classes-backend.onrender.com";
+const BASE_URL = "https://ambition-classes-backend.onrender.com";
+
 async function login(){
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const msg = document.getElementById("msg");
 
-    const res = await fetch(`${BASE_URL}/api/users/login`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, password})
-    });
+    msg.innerText = ""; // clear old message
 
-    if(!res.ok){
-        alert("Invalid credentials");
+    // 🔥 BASIC VALIDATION
+    if(!username || !password){
+        msg.innerText = "Enter username and password";
         return;
     }
 
-    const user = await res.json();
+    try{
+        const res = await fetch(`${BASE_URL}/api/users/login`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username, password})
+        });
 
-    localStorage.setItem("user", JSON.stringify(user));
+        if(!res.ok){
+            msg.innerText = "Invalid credentials";
+            return;
+        }
 
-    if(user.firstLogin){
-        window.location.href = "change-password.html";
-        return;
-    }
+        const user = await res.json();
 
-    if(user.role === "admin"){
-        window.location.href = "admin-dashboard.html";
-    }
-    else if(user.role === "student"){
-        window.location.href = "student-dashboard.html";
-    }
-    else if(user.role === "parent"){
-        window.location.href = "parent-dashboard.html";
+        console.log("LOGIN USER:", user); // 🔥 DEBUG
+
+        // 🔥 SAVE USER
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // 🔥 FIRST LOGIN
+        if(user.firstLogin){
+            window.location.href = "change-password.html";
+            return;
+        }
+
+        // 🔥 ROLE BASED REDIRECT (SAFE)
+        const role = user.role?.toLowerCase();
+
+        if(role === "admin"){
+            window.location.href = "admin-dashboard.html";
+        }
+        else if(role === "student"){
+            window.location.href = "student-dashboard.html";
+        }
+        else if(role === "parent"){
+            window.location.href = "parent-dashboard.html";
+        }
+        else{
+            msg.innerText = "Unknown role";
+        }
+
+    } catch(err){
+        console.error(err);
+        msg.innerText = "Server error. Try again.";
     }
 }
 </script>
