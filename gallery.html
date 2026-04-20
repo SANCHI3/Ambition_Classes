@@ -250,7 +250,8 @@ A glimpse of our classrooms, activities, and student achievements.
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
+const BASE_URL = "https://ambition-classes-backend.onrender.com";
+    
 let allEvents = [];
 
 function showImage(src){
@@ -308,7 +309,7 @@ function openEvent(eventIndex){
 // 🔥 LOAD EVENTS
 async function loadGallery(){
 
-    const res = await fetch("http://localhost:8080/api/events");
+    const res = await fetch(`${BASE_URL}/api/events`);
     const events = await res.json();
 
     const container = document.getElementById("galleryContainer");
@@ -384,7 +385,7 @@ function showImage(src){
 <script>
 function getFullPath(photo){
     if (!photo) return "";
-    return "http://localhost:8080/" + photo;
+    return `${BASE_URL}/` + photo;
 }
 </script>
 <script src="../js/admin.js"></script>
