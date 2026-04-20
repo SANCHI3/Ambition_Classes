@@ -49,6 +49,12 @@ async function login(){
         body: JSON.stringify({username, password})
     });
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
+if(!user || user.role !== "student"){
+    window.location.href = "admin-login.html";
+}
+
     if(!res.ok){
         alert("Invalid credentials");
         return;
