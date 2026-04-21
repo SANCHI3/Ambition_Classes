@@ -1087,12 +1087,17 @@ function openEvent(index){
     document.getElementById("eventModalBody").innerHTML = photosHtml;
 }
 
-async function uploadResultImage() {
-   const fileInput = document.getElementById("resultImageInput");
+async function uploadImage() {
+    const fileInput = document.getElementById("resultImageInput");
     const file = fileInput.files[0];
 
     if (!file) {
         alert("Select file first");
+        return;
+    }
+
+    if (file.size > 2000000) {
+        alert("Image too large (max 2MB)");
         return;
     }
 
@@ -1101,7 +1106,8 @@ async function uploadResultImage() {
     formData.append("upload_preset", "ambition_upload");
 
     try {
-        // 🔥 STEP 1: Upload to Cloudinary
+        await new Promise(r => setTimeout(r, 1000)); // 🔥 stability
+
         const res = await fetch(
             "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
             {
@@ -1113,26 +1119,22 @@ async function uploadResultImage() {
         const data = await res.json();
         console.log("Cloudinary response:", data);
 
-        if (!data.secure_url) {
-            alert("Cloudinary upload failed");
+        if (data.error) {
+            alert("Upload failed: " + data.error.message);
             return;
         }
 
         const imageUrl = data.secure_url;
 
-        // 🔥 STEP 2: SAVE TO BACKEND (ADD DEBUG HERE)
-        const saveRes = await fetch(
-            "https://ambition-classes-backend.onrender.com/api/result-images",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ image: imageUrl })
-            }
-        );
+        await fetch("https://ambition-classes-backend.onrender.com/api/result-images", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ image: imageUrl })
+        });
 
-        console.log("Backend save response:", saveRes); // 👈 HERE
+        fileInput.value = ""; // 🔥 MUST
 
         alert("Upload successful");
 
@@ -1141,7 +1143,6 @@ async function uploadResultImage() {
         alert("Upload failed");
     }
 }
-
 async function loadResultImages(){
     try{
         const res = await fetch(`${BASE_URL}/api/result-images`);
