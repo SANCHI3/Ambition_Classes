@@ -1087,27 +1087,34 @@ function openEvent(index){
     document.getElementById("eventModalBody").innerHTML = photosHtml;
 }
 
-function uploadResultImage() {
+async function uploadResultImage(){
 
-    const fileInput = document.getElementById("resultImageInput");
-    const file = fileInput.files[0];
+    const file = document.getElementById("resultFile").files[0];
 
-    if (!file) {
-        alert("Select file first");
+    if(!file){
+        alert("Select a file first");
         return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
 
-    fetch(`${BASE_URL}/api/result-images/upload`, {
-        method: "POST",
-        body: formData
-    })
-    .then(() => {
-        alert("Uploaded");
-        loadResultImages();
-    });
+    try{
+        const res = await fetch(`${BASE_URL}/api/result-images/upload`, {
+            method: "POST",
+            body: formData
+        });
+
+        if(!res.ok){
+            throw new Error("Upload failed");
+        }
+
+        alert("Image uploaded successfully");
+
+    } catch(err){
+        console.error(err);
+        alert("Upload error");
+    }
 }
 
 function loadResultImages() {
