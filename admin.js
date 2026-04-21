@@ -969,37 +969,64 @@ async function createNewEvent(){
 }
 
 // upload photo
-async function uploadPhoto(){
+async function uploadGalleryImage() {
+    const fileInput = document.getElementById("galleryInput");
+    const file = fileInput.files[0];
 
-    const files = document.getElementById("fileInput").files;
-    const eventId = document.getElementById("eventSelect").value;
-
-    console.log("Selected eventId:", eventId);
-
-    if(!eventId){
-        alert("Select an event first");
+    if (!file) {
+        alert("Select file first");
         return;
     }
 
-    if(files.length === 0){
-        alert("Select file");
+    if (!selectedEventId) {
+        alert("Select event first");
         return;
     }
 
-    for(let file of files){
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ambition_upload");
 
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("eventId", eventId);
+    try {
+        // 🔥 Upload to Cloudinary
+        const res = await fetch(
+            "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
 
-        await fetch(`${BASE_URL}/api/upload`, {
+        const data = await res.json();
+        console.log("Cloudinary response:", data);
+
+        if (data.error) {
+            alert(data.error.message);
+            return;
+        }
+
+        const imageUrl = data.secure_url;
+
+        // 🔥 SAVE TO BACKEND WITH EVENT ID
+        await fetch("https://ambition-classes-backend.onrender.com/api/gallery-images", {
             method: "POST",
-            body: formData
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                image: imageUrl,
+                eventId: selectedEventId   // 🔥 THIS IS THE KEY FIX
+            })
         });
-    }
 
-    alert("Uploaded");
-    loadEvents();
+        alert("Gallery image uploaded");
+
+        fileInput.value = "";
+
+    } catch (err) {
+        console.error(err);
+        alert("Upload failed");
+    }
 }
 
 async function deletePhoto(eventId, photoPath){
