@@ -1087,42 +1087,48 @@ function openEvent(index){
     document.getElementById("eventModalBody").innerHTML = photosHtml;
 }
 
-async function uploadResultImage(){
+async function uploadImage() {
+    const fileInput = document.getElementById("resultImageInput");
+    const file = fileInput.files[0];
 
-    const input = document.getElementById("resultImageInput");
-
-    if(!input){
-        alert("Input not found");
-        return;
-    }
-
-    const file = input.files[0];
-
-    if(!file){
+    if (!file) {
         alert("Select file first");
         return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("upload_preset", "ambition_upload");
 
-    try{
-        const res = await fetch(`${BASE_URL}/api/result-images/upload`, {
+    try {
+        // 🔥 Upload directly to Cloudinary
+        const res = await fetch(
+            "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const data = await res.json();
+
+        const imageUrl = data.secure_url;
+
+        // 🔥 Send ONLY URL to backend
+        await fetch("https://ambition-classes-backend.onrender.com/api/result-images", {
             method: "POST",
-            body: formData
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ image: imageUrl })
         });
 
-        if(!res.ok){
-            throw new Error("Upload failed");
-        }
+        alert("Upload successful");
 
-        alert("Uploaded successfully");
-
-    }catch(err){
+    } catch (err) {
         console.error(err);
-        alert("Upload error");
+        alert("Upload failed");
     }
-    loadResultImages();
 }
 
 async function loadResultImages(){
