@@ -1122,6 +1122,7 @@ async function uploadResultImage(){
         console.error(err);
         alert("Upload error");
     }
+    loadResultImages();
 }
 
 async function loadResultImages(){
@@ -1151,6 +1152,7 @@ function deleteImage(id) {
     fetch(`${BASE_URL}/api/result-images/${id}`, {
         method: "DELETE"
     }).then(() => loadResultImages());
+    loadResultImages();
 }
 
 loadResultImages();
