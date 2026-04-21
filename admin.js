@@ -1088,7 +1088,7 @@ function openEvent(index){
 }
 
 async function uploadResultImage() {
-    const fileInput = document.getElementById("resultImageInput");
+   const fileInput = document.getElementById("resultImageInput");
     const file = fileInput.files[0];
 
     if (!file) {
@@ -1101,7 +1101,7 @@ async function uploadResultImage() {
     formData.append("upload_preset", "ambition_upload");
 
     try {
-        // 🔥 Upload to Cloudinary
+        // 🔥 STEP 1: Upload to Cloudinary
         const res = await fetch(
             "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
             {
@@ -1111,10 +1111,8 @@ async function uploadResultImage() {
         );
 
         const data = await res.json();
+        console.log("Cloudinary response:", data);
 
-        console.log("Cloudinary response:", data); // 👈 DEBUG
-
-        // ❗ IMPORTANT CHECK
         if (!data.secure_url) {
             alert("Cloudinary upload failed");
             return;
@@ -1122,17 +1120,21 @@ async function uploadResultImage() {
 
         const imageUrl = data.secure_url;
 
-        // 🔥 Save to backend
-        await fetch("https://ambition-classes-backend.onrender.com/api/result-images", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ image: imageUrl })
-        });
+        // 🔥 STEP 2: SAVE TO BACKEND (ADD DEBUG HERE)
+        const saveRes = await fetch(
+            "https://ambition-classes-backend.onrender.com/api/result-images",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ image: imageUrl })
+            }
+        );
+
+        console.log("Backend save response:", saveRes); // 👈 HERE
 
         alert("Upload successful");
-        fileInput.value = ""; // clear input
 
     } catch (err) {
         console.error(err);
