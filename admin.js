@@ -1101,7 +1101,7 @@ async function uploadImage() {
     formData.append("upload_preset", "ambition_upload");
 
     try {
-        // 🔥 Upload directly to Cloudinary
+        // 🔥 Upload to Cloudinary
         const res = await fetch(
             "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
             {
@@ -1112,9 +1112,17 @@ async function uploadImage() {
 
         const data = await res.json();
 
+        console.log("Cloudinary response:", data); // 👈 DEBUG
+
+        // ❗ IMPORTANT CHECK
+        if (!data.secure_url) {
+            alert("Cloudinary upload failed");
+            return;
+        }
+
         const imageUrl = data.secure_url;
 
-        // 🔥 Send ONLY URL to backend
+        // 🔥 Save to backend
         await fetch("https://ambition-classes-backend.onrender.com/api/result-images", {
             method: "POST",
             headers: {
@@ -1124,6 +1132,7 @@ async function uploadImage() {
         });
 
         alert("Upload successful");
+        fileInput.value = ""; // clear input
 
     } catch (err) {
         console.error(err);
