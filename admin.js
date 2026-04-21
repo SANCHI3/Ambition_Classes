@@ -1141,12 +1141,16 @@ async function loadResultImages(){
         container.innerHTML = "";
 
         data.forEach(img => {
-            container.innerHTML += `
-                <div class="image-card">
-                    <img src="${img.image}" />
-                </div>
-            `;
-        });
+    container.innerHTML += `
+        <div class="image-card" style="display:inline-block; margin:10px; text-align:center;">
+            <img src="${img.image}" width="150"/><br>
+            <button onclick="deleteImage('${img.id}')" 
+                    style="margin-top:5px; background:red; color:white; border:none; padding:5px 10px;">
+                Delete
+            </button>
+        </div>
+    `;
+});
 
     }catch(err){
         console.error(err);
