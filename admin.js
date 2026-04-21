@@ -1130,6 +1130,13 @@ async function loadResultImages(){
         const res = await fetch(`${BASE_URL}/api/result-images/images`);
         const data = await res.json();
 
+        console.log("IMAGES DATA:", data);
+
+        if(!Array.isArray(data)){
+            console.error("Not array:", data);
+            return;
+        }
+
         const container = document.getElementById("resultImagesContainer");
         container.innerHTML = "";
 
@@ -1137,15 +1144,12 @@ async function loadResultImages(){
             container.innerHTML += `
                 <div class="image-card">
                     <img src="${img.image}" />
-                    <button class="delete-btn" onclick="deleteImage('${img.id}')">
-                        Delete
-                    </button>
                 </div>
             `;
         });
 
     }catch(err){
-        console.error("Error loading images:", err);
+        console.error(err);
     }
 }
 function deleteImage(id) {
