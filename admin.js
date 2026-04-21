@@ -969,7 +969,7 @@ async function createNewEvent(){
 }
 
 // upload photo
-async function uploadGalleryImage() {
+async function uploadPhoto() {
     const fileInput = document.getElementById("galleryInput");
     const file = fileInput.files[0];
 
