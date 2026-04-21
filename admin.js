@@ -1089,10 +1089,17 @@ function openEvent(index){
 
 async function uploadResultImage(){
 
-    const file = document.getElementById("resultFile").files[0];
+    const input = document.getElementById("resultFile");
+
+    if(!input){
+        alert("Input not found");
+        return;
+    }
+
+    const file = input.files[0];
 
     if(!file){
-        alert("Select a file first");
+        alert("Select file first");
         return;
     }
 
@@ -1109,9 +1116,9 @@ async function uploadResultImage(){
             throw new Error("Upload failed");
         }
 
-        alert("Image uploaded successfully");
+        alert("Uploaded successfully");
 
-    } catch(err){
+    }catch(err){
         console.error(err);
         alert("Upload error");
     }
