@@ -1087,7 +1087,7 @@ function openEvent(index){
     document.getElementById("eventModalBody").innerHTML = photosHtml;
 }
 
-async function uploadImage() {
+async function uploadResultImage() {
     const fileInput = document.getElementById("resultImageInput");
     const file = fileInput.files[0];
 
