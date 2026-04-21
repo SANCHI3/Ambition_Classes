@@ -1124,27 +1124,29 @@ async function uploadResultImage(){
     }
 }
 
-function loadResultImages() {
+async function loadResultImages(){
+    try{
+        const res = await fetch(`${BASE_URL}/api/result-images/images`);
+        const data = await res.json();
 
-    fetch(`${BASE_URL}/api/result-images`)
-        .then(res => res.json())
-        .then(images => {
+        const container = document.getElementById("resultImagesContainer");
+        container.innerHTML = "";
 
-            const container = document.getElementById("resultImagesContainer");
-            container.innerHTML = "";
-
-            images.forEach(img => {
-                container.innerHTML += `
+        data.forEach(img => {
+            container.innerHTML += `
                 <div class="image-card">
-                    <img src="${BASE_URL}/${img.image}" />
-                    <button class="delete-btn" onclick="deleteImage('${img.id}')">Delete</button>
+                    <img src="${img.image}" />
+                    <button class="delete-btn" onclick="deleteImage('${img.id}')">
+                        Delete
+                    </button>
                 </div>
             `;
-            });
-
         });
-}
 
+    }catch(err){
+        console.error("Error loading images:", err);
+    }
+}
 function deleteImage(id) {
     fetch(`${BASE_URL}/api/result-images/${id}`, {
         method: "DELETE"
