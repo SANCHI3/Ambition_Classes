@@ -1127,7 +1127,7 @@ async function uploadResultImage(){
 
 async function loadResultImages(){
     try{
-        const res = await fetch(`${BASE_URL}/api/result-images/images`);
+        const res = await fetch(`${BASE_URL}/api/result-images`);
         const data = await res.json();
 
         console.log("IMAGES DATA:", data);
