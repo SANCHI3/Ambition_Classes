@@ -1089,7 +1089,7 @@ function openEvent(index){
 
 async function uploadResultImage(){
 
-    const input = document.getElementById("resultFile");
+    const input = document.getElementById("resultImageInput");
 
     if(!input){
         alert("Input not found");
