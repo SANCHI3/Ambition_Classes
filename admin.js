@@ -867,17 +867,7 @@ function displayTests(){
 
 let events = [];
 function getFullPath(photo) {
-    if (!photo) return "";
-
-    if (photo.startsWith("/")) {
-        photo = photo.substring(1);
-    }
-
-    if (!photo.startsWith("uploads/")) {
-        photo = "uploads/" + photo;
-    }
-
-    return `${BASE_URL}/` + photo;
+    return photo; // Cloudinary URL direct
 }
 
 async function loadEvents(){
@@ -947,9 +937,7 @@ events.forEach(event => {
  
 
 // 🔥 ADD THIS
-if(events.length > 0){
-    selectedEventId = events[0].id;
-}
+
 }
 // create event
 async function createNewEvent(){
@@ -1017,18 +1005,20 @@ async function uploadPhoto() {
 
         const imageUrl = data.secure_url;
 
-        await fetch(`${BASE_URL}/api/upload`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                image: imageUrl,
-                eventId: selectedEventId
-            })
-        });
+        await fetch(`${BASE_URL}/api/events/add-photo`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    photo: imageUrl,
+    eventId: selectedEventId
+  })
+});
 
         alert("Upload success ✅");
+     await loadEvents();
+await loadGallery();
 
         fileInput.value = "";
 
@@ -1063,7 +1053,7 @@ async function deleteEvent(eventId){
 loadEvents();
 
 async function loadGallery(){
-    let allEvents = [];
+    
     const res = await fetch(`${BASE_URL}/api/events`);
     const events = await res.json();
 
@@ -1075,7 +1065,7 @@ async function loadGallery(){
     // ✅ THIS IS WHERE YOUR CODE GOES
     events.forEach((event, index) => {
 
-        if(event.photos.length === 0) return;
+        if(!event.photos || event.photos.length === 0) return;
 
         container.innerHTML += `
             <div class="col-md-4 mb-4">
@@ -1083,7 +1073,7 @@ async function loadGallery(){
                      style="cursor:pointer;"
                      onclick="openEvent(${index})">
 
-                    <img src="${event.photos[0]}" 
+                    <img src="${getFullPath(event.photos[0])}"
                          style="height:180px;object-fit:cover;">
 
                     <div class="p-3 text-center">
