@@ -925,6 +925,11 @@ events.forEach(event => {
 
         html += `</div>`;
     });
+
+         if(events.length > 0){
+    selectedEventId = events[0].id;
+    document.getElementById("eventSelect").value = selectedEventId;
+}
 }
 
         html += `</div>`;
