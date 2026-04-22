@@ -289,7 +289,7 @@ function openEvent(eventIndex){
                     <img src="${getFullPath(photo)}"
                          class="rounded shadow gallery-img"
                          style="width:90%; height:250px; object-fit:cover; cursor:pointer;"
-                         onclick="showImage('http://localhost:8080/${photo}')">
+                         onclick="showImage('${getFullPath(photo)}')"
                 </div>
             `;
         }
