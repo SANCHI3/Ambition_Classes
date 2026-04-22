@@ -942,18 +942,9 @@ events.forEach(event => {
         container.innerHTML += html;
     });
 
-    document.getElementById("eventSelect").addEventListener("change", function () {
-    selectedEventId = this.value;
-    console.log("Selected Event:", selectedEventId);
-});
+    
 
- events.forEach(event => {
-    select.innerHTML += `
-        <option value="${event.id}">
-            ${event.name}
-        </option>
-    `;
-});
+ 
 
 // 🔥 ADD THIS
 if(events.length > 0){
@@ -1072,14 +1063,13 @@ async function deleteEvent(eventId){
 loadEvents();
 
 async function loadGallery(){
-
+    let allEvents = [];
     const res = await fetch(`${BASE_URL}/api/events`);
     const events = await res.json();
 
     const container = document.getElementById("galleryContainer");
     if(!container) return;
     container.innerHTML = "";
-    let allEvents = [];
     allEvents = events;
 
     // ✅ THIS IS WHERE YOUR CODE GOES
@@ -1093,7 +1083,7 @@ async function loadGallery(){
                      style="cursor:pointer;"
                      onclick="openEvent(${index})">
 
-                    <img src="${BASE_URL}/${event.photos[0]}" 
+                    <img src="${event.photos[0]}" 
                          style="height:180px;object-fit:cover;">
 
                     <div class="p-3 text-center">
@@ -1123,7 +1113,7 @@ function openEvent(index){
             `;
         } else {
             photosHtml += `
-                <img src="${getFullPath(photo)}" width="250">
+                <img src="${photo}" width="250">
             `;
         }
 
@@ -1227,7 +1217,10 @@ function deleteImage(id) {
 }
 
 loadResultImages();
-
+document.getElementById("eventSelect").addEventListener("change", function () {
+    selectedEventId = this.value;
+    console.log("Selected Event:", selectedEventId);
+});
 window.onload = function(){
     loadStudents();
     loadStudentsResults();
