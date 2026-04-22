@@ -970,7 +970,8 @@ async function createNewEvent(){
 
 // upload photo
 async function uploadPhoto() {
-    const fileInput = document.getElementById("galleryInput");
+
+    const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
 
     if (!file) {
@@ -988,7 +989,6 @@ async function uploadPhoto() {
     formData.append("upload_preset", "ambition_upload");
 
     try {
-        // 🔥 Upload to Cloudinary
         const res = await fetch(
             "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
             {
@@ -998,7 +998,6 @@ async function uploadPhoto() {
         );
 
         const data = await res.json();
-        console.log("Cloudinary response:", data);
 
         if (data.error) {
             alert(data.error.message);
@@ -1007,25 +1006,24 @@ async function uploadPhoto() {
 
         const imageUrl = data.secure_url;
 
-        // 🔥 SAVE TO BACKEND WITH EVENT ID
-        await fetch("https://ambition-classes-backend.onrender.com/api/gallery-images", {
+        await fetch(`${BASE_URL}/api/gallery-images`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 image: imageUrl,
-                eventId: selectedEventId   // 🔥 THIS IS THE KEY FIX
+                eventId: selectedEventId
             })
         });
 
-        alert("Gallery image uploaded");
+        alert("Upload success ✅");
 
         fileInput.value = "";
 
     } catch (err) {
         console.error(err);
-        alert("Upload failed");
+        alert("Upload failed ❌");
     }
 }
 
