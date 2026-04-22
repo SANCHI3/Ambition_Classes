@@ -1095,6 +1095,7 @@ async function loadGallery(){
             </div>
         `;
     });
+ console.log(fileInput.files);
 }
 
 function openEvent(index){
