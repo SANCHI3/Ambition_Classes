@@ -973,12 +973,10 @@ async function createNewEvent(){
 
 // upload photo
 async function uploadPhoto() {
-   
 
     const fileInput = document.getElementById("fileInput");
-    const file = fileInput.files[0];
 
-    if (!file) {
+    if (!fileInput.files.length) {
         alert("Select file first");
         return;
     }
@@ -988,42 +986,49 @@ async function uploadPhoto() {
         return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "ambition_upload");
-
     try {
-        const res = await fetch(
-            "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
-            {
-                method: "POST",
-                body: formData
+
+        for (let file of fileInput.files) {
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "ambition_upload");
+
+            // 🔥 Upload to Cloudinary
+            const res = await fetch(
+                "https://api.cloudinary.com/v1_1/dfwmbsrne/image/upload",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const data = await res.json();
+
+            if (data.error) {
+                alert(data.error.message);
+                return;
             }
-        );
 
-        const data = await res.json();
+            const imageUrl = data.secure_url;
 
-        if (data.error) {
-            alert(data.error.message);
-            return;
+            // 🔥 Save to backend
+            await fetch(`${BASE_URL}/api/events/add-photo`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    photo: imageUrl,
+                    eventId: selectedEventId
+                })
+            });
         }
 
-        const imageUrl = data.secure_url;
+        alert("All images uploaded ✅");
 
-        await fetch(`${BASE_URL}/api/events/add-photo`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    photo: imageUrl,
-    eventId: selectedEventId
-  })
-});
-
-        alert("Upload success ✅");
-     await loadEvents();
-await loadGallery();
+        await loadEvents();
+        await loadGallery();
 
         fileInput.value = "";
 
