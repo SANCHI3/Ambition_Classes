@@ -198,7 +198,7 @@ let answers = new Array(questions.length).fill(null);
 
 function loadTestsForStudents(){
 
-    fetch("http://localhost:8080/api/tests")
+    fetch("https://ambition-classes-backend.onrender.com/api/tests")
     .then(res => res.json())
     .then(data => {
 
@@ -224,7 +224,7 @@ function loadTestQuestions(){
     return;
 }
 
-    fetch("http://localhost:8080/api/tests")
+    fetch("https://ambition-classes-backend.onrender.com/api/tests")
     .then(res => res.json())
     .then(data => {
 
