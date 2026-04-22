@@ -153,9 +153,7 @@ Login
 <div class="question-box">
     <h5 class="mb-2 text-primary">Select Test to Start</h5>
 
-<select id="studentTestSelect" class="form-control mb-3" onchange="loadTestQuestions()">
-    <option value="">Select Test</option>
-</select>
+<div id="testCards" class="row"></div>
 
 <p id="selectMsg">Please select a test to begin</p>
 
@@ -202,19 +200,55 @@ function loadTestsForStudents(){
     .then(res => res.json())
     .then(data => {
 
-        let dropdown = document.getElementById("studentTestSelect");
+        let container = document.getElementById("testCards");
+        container.innerHTML = "";
 
-        dropdown.innerHTML = "<option value=''>Select Test</option>";
+        data.forEach((test, index) => {
 
-        data.forEach(t => {
-            dropdown.innerHTML += `
-                <option value="${t.id}">${t.name}</option>
+            container.innerHTML += `
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow p-4 text-center"
+                         style="cursor:pointer; border-radius:12px;"
+                         onclick="startTest('${test.id}')">
+
+                        <h5>${test.name}</h5>
+                        <p>${test.questions?.length || 0} Questions</p>
+
+                        <button class="btn btn-primary mt-2">
+                            Start Test
+                        </button>
+                    </div>
+                </div>
             `;
         });
 
     });
 }
 
+    function startTest(testId){
+
+    fetch("https://ambition-classes-backend.onrender.com/api/tests")
+    .then(res => res.json())
+    .then(data => {
+
+        let selectedTest = data.find(t => t.id === testId);
+
+        if(!selectedTest){
+            alert("Test not found");
+            return;
+        }
+
+        questions = selectedTest.questions || [];
+
+        document.getElementById("testSection").style.display = "block";
+
+        currentQuestion = 0;
+        answers = new Array(questions.length).fill(null);
+
+        generatePalette();
+        loadQuestion();
+    });
+}
 function loadTestQuestions(){
 
     let testId = document.getElementById("studentTestSelect").value;
