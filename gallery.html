@@ -286,7 +286,7 @@ function openEvent(eventIndex){
         } else {
             photosHtml += `
                 <div class="col-md-4 mb-4 d-flex justify-content-center">
-                    <img src="${getFullPath(photo)}"
+                    <img src="${event.photos[0]}">
                          class="rounded shadow gallery-img"
                          style="width:90%; height:250px; object-fit:cover; cursor:pointer;"
                          onclick="showImage('${getFullPath(photo)}')"
@@ -327,7 +327,7 @@ async function loadGallery(){
                      style="cursor:pointer;"
                      onclick="openEvent(${index})">
 
-                    <img src="${getFullPath(event.photos[0])}"
+                    <img src="${event.photos[0]}">
                          style="height:180px;object-fit:cover;border-radius:10px 10px 0 0;">
 
                     <div class="p-3 text-center">
