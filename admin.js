@@ -1017,7 +1017,7 @@ async function uploadPhoto() {
 
         const imageUrl = data.secure_url;
 
-        await fetch(`${BASE_URL}/api/photo`, {
+        await fetch(`${BASE_URL}/api/upload`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
