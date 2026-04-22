@@ -946,6 +946,19 @@ events.forEach(event => {
     selectedEventId = this.value;
     console.log("Selected Event:", selectedEventId);
 });
+
+ events.forEach(event => {
+    select.innerHTML += `
+        <option value="${event.id}">
+            ${event.name}
+        </option>
+    `;
+});
+
+// 🔥 ADD THIS
+if(events.length > 0){
+    selectedEventId = events[0].id;
+}
 }
 // create event
 async function createNewEvent(){
