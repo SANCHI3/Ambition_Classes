@@ -6,6 +6,7 @@ const attDate = document.getElementById("attDate");
 const attStatus = document.getElementById("attStatus");
 const attendanceTable = document.getElementById("attendanceTable");
 const attendanceSummary = document.getElementById("attendanceSummary");
+ let selectedEventId = null;
     function checkStudentExists(studentMobile, callback){
 
     fetch(`${BASE_URL}/api/student/all`)
@@ -940,6 +941,11 @@ events.forEach(event => {
 
         container.innerHTML += html;
     });
+
+    document.getElementById("eventSelect").addEventListener("change", function () {
+    selectedEventId = this.value;
+    console.log("Selected Event:", selectedEventId);
+});
 }
 // create event
 async function createNewEvent(){
@@ -970,6 +976,7 @@ async function createNewEvent(){
 
 // upload photo
 async function uploadPhoto() {
+   
 
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
