@@ -1,7 +1,7 @@
 const BASE_URL = "https://ambition-classes-backend.onrender.com";
 const attStudent = document.getElementById("attStudent");
 const attClass = document.getElementById("attClass");
-attClass.addEventListener("change", loadStudentsDropdown);
+ 
 const attDate = document.getElementById("attDate");
 const attStatus = document.getElementById("attStatus");
 const attendanceTable = document.getElementById("attendanceTable");
