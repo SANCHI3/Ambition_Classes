@@ -387,6 +387,15 @@ async function sendEmail(event){
         alert("Fill all fields");
         return;
     }
+    if(!/^[0-9]{10}$/.test(phone)){
+    alert("Enter valid 10-digit phone number");
+    return;
+}
+
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert("Enter valid email");
+    return;
+}
 
     await fetch("https://ambition-classes-backend.onrender.com/api/contact", {
         method: "POST",
