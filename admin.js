@@ -219,19 +219,24 @@ function deleteStudent(mobile){
 
 function loadStudentsAttendance() {
 
+    const selectedClass = document.getElementById("attClass").value;
+    const studentDropdown = document.getElementById("attStudent");
+
+    studentDropdown.innerHTML = '<option value="">Select Student</option>';
+
+    if (!selectedClass) return; // 🚨 stop if no class selected
+
     fetch(`${BASE_URL}/api/student/all`)
         .then(res => res.json())
         .then(students => {
 
-            attStudent.innerHTML = '<option value="">Select Student</option>';
+            const filtered = students.filter(s => s.className === selectedClass);
 
-            students.forEach(s => {
-            if (!attClass.value || attClass.value === "Select Class" || s.className === attClass.value) {
-                attStudent.innerHTML += `
+            filtered.forEach(s => {
+                studentDropdown.innerHTML += `
                     <option value="${s.studentMobile}">${s.name}</option>
                 `;
-            }
-        });
+            });
 
         });
 }
