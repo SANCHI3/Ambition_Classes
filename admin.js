@@ -219,21 +219,27 @@ function deleteStudent(mobile){
 
 function loadStudentsAttendance() {
 
-    const selectedClass = document.getElementById("attClass").value;
-    const studentDropdown = document.getElementById("attStudent");
+    const attClass = document.getElementById("attClass");
+    const attStudent = document.getElementById("attStudent");
 
-    studentDropdown.innerHTML = '<option value="">Select Student</option>';
+    const selectedClass = attClass.value;
 
-    if (!selectedClass) return; // 🚨 stop if no class selected
+    attStudent.innerHTML = '<option value="">Select Student</option>';
+
+    if (!selectedClass) return;
 
     fetch(`${BASE_URL}/api/student/all`)
         .then(res => res.json())
         .then(students => {
 
+            console.log("Selected class:", selectedClass);
+
             const filtered = students.filter(s => s.className === selectedClass);
 
+            console.log("Filtered:", filtered);
+
             filtered.forEach(s => {
-                studentDropdown.innerHTML += `
+                attStudent.innerHTML += `
                     <option value="${s.studentMobile}">${s.name}</option>
                 `;
             });
