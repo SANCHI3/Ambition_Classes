@@ -388,7 +388,7 @@ async function sendEmail(event){
         return;
     }
 
-    await fetch("http://localhost:8080/api/contact", {
+    await fetch("https://ambition-classes-backend.onrender.com/api/contact", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
