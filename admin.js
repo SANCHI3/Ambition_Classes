@@ -123,29 +123,31 @@ function loadStudents(){
 
         data.forEach((s) => {
 
-            let matchSearch =
-    (s.name || "").toLowerCase().includes(search) ||
-    (s.studentMobile || "").includes(search);
+    let matchSearch =
+        (s.name || "").toLowerCase().includes(search) ||
+        (s.studentMobile || "").includes(search);
 
-            let matchClass =
-                filterClass === "" || s.className === filterClass;
+    let matchClass =
+        filterClass === "" || s.className === filterClass;
 
-            if(matchSearch && matchClass){
+    if(matchSearch && matchClass){
 
-             table.innerHTML = `
-             <td>${s.name}</td>
-             <td>${s.studentMobile}</td>
-             <td>${s.parentMobile}</td>
-             <td>${s.className}</td>
-             <td>${s.totalFees} / ${s.paidAmount}</td>
-             <td>
-                 <button class="btn btn-warning" onclick="editStudent('${s.id}')">Edit</button>
-                 <button class="btn btn-danger" onclick="deleteStudent('${s.id}')">Delete</button>
-             </td>
-             `;
-            }
+        table.innerHTML += `   // 🔥 += NOT =
+        <tr>
+            <td>${s.name}</td>
+            <td>${s.studentMobile}</td>
+            <td>${s.parentMobile}</td>
+            <td>${s.className}</td>
+            <td>${s.totalFees} / ${s.paidAmount}</td>
+            <td>
+                <button class="btn btn-warning" onclick="editStudent('${s.id}')">Edit</button>
+                <button class="btn btn-danger" onclick="deleteStudent('${s.id}')">Delete</button>
+            </td>
+        </tr>
+        `;
+    }
 
-        });
+});
 
     });
 
