@@ -214,7 +214,7 @@ function deleteStudent(mobile){
         return;
     }
 
-    fetch(`${BASE_URL}/api/student/mobile/${mobile}`, {
+    fetch(`${BASE_URL}/api/student/${mobile}`, {
         method: "DELETE"
     })
     .then(res => {
