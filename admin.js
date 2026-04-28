@@ -128,7 +128,8 @@ function loadStudents(){
         (s.studentMobile || "").includes(search);
 
     let matchClass =
-        filterClass === "" || s.className === filterClass;
+    filterClass === "" ||
+    (s.className || "").trim().toLowerCase() === filterClass.trim().toLowerCase();
 
     if(matchSearch && matchClass){
 
