@@ -208,28 +208,30 @@ function editStudent(id){
     });
 }
 
-function deleteStudent(mobile){
+function deleteStudent(mobile, btn){
 
-    if(!confirm("Are you sure you want to delete this student?")){
-        return;
-    }
+    if (!confirm("Are you sure?")) return;
 
     fetch(`${BASE_URL}/api/student/${mobile}`, {
         method: "DELETE"
     })
     .then(res => {
-        if(!res.ok){
-            throw new Error("Delete failed");
+        if (!res.ok) {
+            return res.text().then(err => { throw new Error(err); });
         }
+        return res.text();
+    })
+    .then(msg => {
+        alert(msg || "Student Deleted Successfully");
 
-        alert("Student Deleted Successfully");
-        loadStudents();
+        // remove row AFTER success
+        let row = btn.closest("tr");
+        row.remove();
     })
     .catch(err => {
-        console.error(err);
-        alert("Error deleting student");
+        console.error("DELETE ERROR:", err);
+        alert("Error deleting student: " + err.message);
     });
-
 }
 
 function loadStudentsAttendance() {
