@@ -133,7 +133,7 @@ function loadStudents(){
 
     if(matchSearch && matchClass){
 
-        table.innerHTML += 
+        table.innerHTML += `
         <tr>
             <td>${s.name}</td>
             <td>${s.studentMobile}</td>
