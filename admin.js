@@ -216,20 +216,16 @@ function deleteStudent(mobile, btn){
         method: "DELETE"
     })
     .then(res => {
-        if (!res.ok) {
-            return res.text().then(err => { throw new Error(err); });
-        }
-        return res.text();
-    })
-    .then(msg => {
-        alert(msg || "Student Deleted Successfully");
+        if (!res.ok) throw new Error("Delete failed");
 
-        // remove row AFTER success
+        alert("Student Deleted Successfully");
+
+        // ✅ NOW WORKS
         let row = btn.closest("tr");
         row.remove();
     })
     .catch(err => {
-        console.error("DELETE ERROR:", err);
+        console.error(err);
         alert("Error deleting student: " + err.message);
     });
 }
