@@ -132,19 +132,17 @@ function loadStudents(){
 
             if(matchSearch && matchClass){
 
-                table.innerHTML += `
-                <tr>
-                    <td>${s.name}</td>
-                    <td>${s.studentMobile}</td>
-                    <td>${s.parentMobile}</td>
-                    <td>${s.className}</td>
-                    <td>${s.totalFees} / ${s.paidAmount}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="editStudent('${s.id}')">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.studentMobile}')">Delete</button>
-                    </td>
-                </tr>
-                `;
+             row.innerHTML = `
+             <td>${s.name}</td>
+             <td>${s.studentMobile}</td>
+             <td>${s.parentMobile}</td>
+             <td>${s.className}</td>
+             <td>${s.totalFees} / ${s.paidAmount}</td>
+             <td>
+                 <button class="btn btn-warning" onclick="editStudent('${s.id}')">Edit</button>
+                 <button class="btn btn-danger" onclick="deleteStudent('${s.id}')">Delete</button>
+             </td>
+             `;
             }
 
         });
