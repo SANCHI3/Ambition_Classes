@@ -176,21 +176,12 @@ function resetFilters(){
     document.getElementById("searchStudent").value = "";
     document.getElementById("filterClass").value = "";
 }
+
 function editStudent(id){
 
-    console.log("Editing ID:", id);
-
     fetch(`${BASE_URL}/api/student/${id}`)
-    .then(res => {
-        console.log("Status:", res.status);
-
-        if(!res.ok){
-            throw new Error("API failed");
-        }
-        return res.json();
-    })
+    .then(res => res.json())
     .then(s => {
-        console.log("Data:", s);
 
         document.getElementById("studentName").value = s.name;
         document.getElementById("studentMobile").value = s.studentMobile;
@@ -200,11 +191,8 @@ function editStudent(id){
         document.getElementById("paidAmount").value = s.paidAmount;
 
         localStorage.setItem("editId", id);
-    })
-    .catch(err => {
-        console.error("EDIT ERROR:", err);
-        alert("Edit failed");
     });
+
 }
 
 function deleteStudent(mobile){
