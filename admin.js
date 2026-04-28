@@ -208,7 +208,7 @@ function editStudent(id){
     });
 }
 
-function deleteStudent(id){
+function deleteStudent(mobile){
 
     if(!confirm("Are you sure you want to delete this student?")){
         return;
