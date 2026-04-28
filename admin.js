@@ -177,9 +177,17 @@ function resetFilters(){
 }
 function editStudent(id){
 
+    console.log("Edit clicked:", id);
+
     fetch(`${BASE_URL}/api/student/${id}`)
-    .then(res => res.json())
+    .then(res => {
+        if(!res.ok){
+            throw new Error("API failed");
+        }
+        return res.json();
+    })
     .then(s => {
+        console.log("Student data:", s);
 
         document.getElementById("studentName").value = s.name;
         document.getElementById("studentMobile").value = s.studentMobile;
@@ -189,8 +197,11 @@ function editStudent(id){
         document.getElementById("paidAmount").value = s.paidAmount;
 
         localStorage.setItem("editId", id);
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Edit failed");
     });
-
 }
 
 function deleteStudent(mobile){
