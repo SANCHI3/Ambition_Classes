@@ -175,17 +175,19 @@ function resetFilters(){
 }
 function editStudent(id){
 
-    console.log("Edit clicked:", id);
+    console.log("Editing ID:", id);
 
     fetch(`${BASE_URL}/api/student/${id}`)
     .then(res => {
+        console.log("Status:", res.status);
+
         if(!res.ok){
             throw new Error("API failed");
         }
         return res.json();
     })
     .then(s => {
-        console.log("Student data:", s);
+        console.log("Data:", s);
 
         document.getElementById("studentName").value = s.name;
         document.getElementById("studentMobile").value = s.studentMobile;
@@ -197,7 +199,7 @@ function editStudent(id){
         localStorage.setItem("editId", id);
     })
     .catch(err => {
-        console.error(err);
+        console.error("EDIT ERROR:", err);
         alert("Edit failed");
     });
 }
