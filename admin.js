@@ -212,9 +212,9 @@ function deleteStudent(mobile, btn){
 
     if (!confirm("Are you sure?")) return;
 
-    fetch(`${BASE_URL}/api/student/${mobile}`, {
-        method: "DELETE"
-    })
+    fetch(`${BASE_URL}/api/student/mobile/${mobile}`, {
+    method: "DELETE"
+})
     .then(res => {
         if (!res.ok) throw new Error("Delete failed");
 
