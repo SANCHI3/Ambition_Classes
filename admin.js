@@ -57,35 +57,32 @@ let editId = localStorage.getItem("editId");
 if(editId){
 
     fetch(`${BASE_URL}/api/student/${editId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: studentName,
-            studentMobile: studentMobile,
-            parentMobile: parentMobile,
-            className: className,
-            totalFees: totalFees,
-            paidAmount: paidAmount
-        })
-    })
-    .then(res => {
-        if(!res.ok) throw new Error("Update failed ❌");
-        return res.text();
-    })
-    .then(() => {
-        alert("Student Updated ✅");
+    method: "PUT",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(student)
+})
+.then(res => {
+    console.log("STATUS:", res.status);
 
-        localStorage.removeItem("editId"); // 🔥 VERY IMPORTANT
-
-        clearForm();
-        loadStudents();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Update failed ❌");
-    });
+    if(!res.ok){
+        return res.text().then(err => {
+            console.error("BACKEND ERROR:", err);
+            throw new Error(err);
+        });
+    }
+    return res.json();
+})
+.then(() => {
+    alert("Student Updated ✅");
+    clearForm();
+    loadStudents();
+})
+.catch(err => {
+    console.error("UPDATE FAILED:", err);
+    alert("Update failed ❌");
+});
 
     return; // 🔥 STOP HERE
 }
