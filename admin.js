@@ -65,7 +65,7 @@ if(editId){
     paidAmount: paidAmount
 };
 
-fetch(`${BASE_URL}/api/student/${editId}`, {
+fetch(`${BASE_URL}/api/student/fees/${editId}`, {
     method: "PUT",
     headers: {
         "Content-Type": "application/json"
