@@ -250,6 +250,17 @@ function deleteStudent(mobile, btn){
     });
 }
 
+function clearForm(){
+    document.getElementById("studentName").value = "";
+    document.getElementById("studentMobile").value = "";
+    document.getElementById("parentMobile").value = "";
+    document.getElementById("className").value = "8th";
+    document.getElementById("totalFees").value = "";
+    document.getElementById("paidAmount").value = "";
+
+    localStorage.removeItem("editId"); // 🔥 reset edit mode
+}
+
 function loadStudentsAttendance() {
 
     const attClass = document.getElementById("attClass");
