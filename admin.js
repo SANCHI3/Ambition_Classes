@@ -169,7 +169,7 @@ function loadStudents(){
             <td>${s.totalFees} / ${s.paidAmount}</td>
             <td>
                 <button class="btn btn-warning" onclick="editStudent('${s.id}')">Edit</button>
-                <button class="btn btn-danger" onclick="deleteStudent('${s.studentMobile}', this)">Delete</button>
+                <button class="btn btn-danger" onclick="deleteStudent('${s.id}', this)">Delete</button>
             </td>
         </tr>
         `;
