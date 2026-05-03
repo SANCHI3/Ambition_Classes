@@ -18,7 +18,6 @@ const attendanceSummary = document.getElementById("attendanceSummary");
 
 }
 function addStudent(){
-    
 
 let studentName = document.getElementById("studentName")?.value;
 let studentMobile = document.getElementById("studentMobile")?.value;
@@ -32,79 +31,102 @@ if (totalFees === "" || paidAmount === "") {
     return;
 }
 
-// ✅ STEP 2 — CONVERT TO NUMBER
 totalFees = parseFloat(totalFees);
 paidAmount = parseFloat(paidAmount);
 
-// ✅ STEP 3 — NUMBER VALIDATION
 if (isNaN(totalFees) || isNaN(paidAmount)) {
     alert("Fees must be numbers");
     return;
 }
-
-console.log(studentName, studentMobile, parentMobile, className, totalFees, paidAmount);
 
 if (!studentName || !studentMobile || !parentMobile || !className) {
     alert("Fill all fields");
     return;
 }
 
-
 if(studentMobile.length != 10 || isNaN(studentMobile)){
-alert("Enter valid 10 digit mobile number");
-return;
+    alert("Enter valid 10 digit mobile number");
+    return;
 }
 
+// 🔥 IMPORTANT PART STARTS HERE
+
+let editId = localStorage.getItem("editId");
+
+// 🔥 EDIT CASE
+if(editId){
+
+    fetch(`${BASE_URL}/api/student/${editId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: studentName,
+            studentMobile: studentMobile,
+            parentMobile: parentMobile,
+            className: className,
+            totalFees: totalFees,
+            paidAmount: paidAmount
+        })
+    })
+    .then(res => {
+        if(!res.ok) throw new Error("Update failed ❌");
+        return res.text();
+    })
+    .then(() => {
+        alert("Student Updated ✅");
+
+        localStorage.removeItem("editId"); // 🔥 VERY IMPORTANT
+
+        clearForm();
+        loadStudents();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Update failed ❌");
+    });
+
+    return; // 🔥 STOP HERE
+}
+
+// 🔥 ADD CASE
 checkStudentExists(studentMobile, function(exists){
 
-
-    let editId = localStorage.getItem("editId");
-
-    if(exists && !editId){
+    if(exists){
         alert("Student with this mobile number already exists");
         return;
     }
 
-    let student = {
-    name: studentName,
-    studentMobile: studentMobile,
-    parentMobile: parentMobile,
-    className: className,
-    totalFees: Number(totalFees),
-    paidAmount: Number(paidAmount)
-};
-
-
-
-   
-
-   fetch(`${BASE_URL}/api/users/create-student`, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        name: studentName,
-        studentMobile: studentMobile,
-        parentMobile: parentMobile,
-        className: className,
-        totalFees: Number(totalFees),
-        paidAmount: Number(paidAmount)
+    fetch(`${BASE_URL}/api/users/create-student`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: studentName,
+            studentMobile: studentMobile,
+            parentMobile: parentMobile,
+            className: className,
+            totalFees: totalFees,
+            paidAmount: paidAmount
+        })
     })
-})
-.then(res => {
-    if(!res.ok) throw new Error("Failed ❌");
-    return res.text();
-})
-.then(() => {
-    alert("Student + User Created Successfully ✅");
-    loadStudents();
-})
-.catch(err => {
-    console.error(err);
-    alert("Something failed ❌ CHECK CONSOLE");
+    .then(res => {
+        if(!res.ok) throw new Error("Failed ❌");
+        return res.text();
+    })
+    .then(() => {
+        alert("Student Added ✅");
+        clearForm();
+        loadStudents();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Something failed ❌");
     });
 });
+
 }
 
 function loadStudents(){
@@ -183,15 +205,12 @@ function editStudent(id){
 
     fetch(`${BASE_URL}/api/student/${id}`)
     .then(res => {
-        console.log("Status:", res.status);
-
         if(!res.ok){
             throw new Error("API failed");
         }
         return res.json();
     })
     .then(s => {
-        console.log("Data:", s);
 
         document.getElementById("studentName").value = s.name;
         document.getElementById("studentMobile").value = s.studentMobile;
@@ -200,6 +219,7 @@ function editStudent(id){
         document.getElementById("totalFees").value = s.totalFees;
         document.getElementById("paidAmount").value = s.paidAmount;
 
+        // 🔥 THIS IS IMPORTANT
         localStorage.setItem("editId", id);
     })
     .catch(err => {
