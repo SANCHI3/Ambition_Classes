@@ -56,7 +56,16 @@ let editId = localStorage.getItem("editId");
 // 🔥 EDIT CASE
 if(editId){
 
-    fetch(`${BASE_URL}/api/student/${editId}`, {
+    let student = {
+    name: studentName,
+    studentMobile: studentMobile,
+    parentMobile: parentMobile,
+    className: className,
+    totalFees: totalFees,
+    paidAmount: paidAmount
+};
+
+fetch(`${BASE_URL}/api/student/${editId}`, {
     method: "PUT",
     headers: {
         "Content-Type": "application/json"
@@ -68,7 +77,6 @@ if(editId){
 
     if(!res.ok){
         return res.text().then(err => {
-            console.error("BACKEND ERROR:", err);
             throw new Error(err);
         });
     }
